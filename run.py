@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from policy_experiments import run as policies
 from summarize import run as summarize
+from budget_grid import run as grid
 from inputs import run as checks
 from solver import distance_matrix,solve,bounds
 from prediction_intervals import run as intervals
@@ -44,7 +45,7 @@ def main():
     args=parser.parse_args();root=args.output
     for folder in ['experiments/processed','tables','figures','work']:(root/folder).mkdir(parents=True,exist_ok=True)
     subprocess.run([sys.executable,str(Path(__file__).with_name('reconstruct.py')),str(args.source),str(root/'experiments/processed')],check=True)
-    obs=reference(root);predict(obs,root/'work');checks(root,root/'tables')
+    obs=reference(root);predict(obs,root/'work');checks(root,root/'tables');grid(root,root/'tables')
     policies(root,root/'work');summarize(root,root/'work',root/'tables')
     intervals(root/'work/test_predictions.parquet',root/'tables')
     figures(root/'tables',root/'figures')
